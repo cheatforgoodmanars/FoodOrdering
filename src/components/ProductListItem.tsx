@@ -12,20 +12,20 @@ export const defaultPizzaImage =
 
 type ProductListItemProps ={
     product: Product;
-}
+};
 
 // const product = products[0] // كل مرة تزيد هنا بيزيد بيأخذ من قائمة الابرودكتس الي تحتها 
 
 const ProductListItem = ({ product }: ProductListItemProps) => {
   //  console.log(props);
     return (
-      <Link href={`/${product.id}`} asChild>  
+      <Link href={`/menu/${product.id}`} asChild>
         <Pressable style={styles.container}>
       {/* <View style={styles.container}> */}
         <Image source={{ uri: product.image || defaultPizzaImage}} style={styles.image} 
           resizeMode='contain'
           ></Image>
-        <Text style={styles.title}>أرحبوا تراحيب المرباخ وقت المحل </Text>
+        {/* <Text style={styles.title}>أرحبوا تراحيب المرباخ وقت المحل </Text> */}
         <Text style={styles.title}>{product.name}</Text>
         <Text style={styles.price}>${product.price}</Text>
 

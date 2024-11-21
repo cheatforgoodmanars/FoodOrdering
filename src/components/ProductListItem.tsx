@@ -1,16 +1,25 @@
-import {Text, View, StyleSheet, Image } from 'react-native';
-import Colors from '@/src/constants/Colors';
+import { Text, View, StyleSheet, Image } from 'react-native';
+import Colors from '@/constants/Colors';
+import { Product } from '@/types';
+//import { Product } from '../types';
 // import products from '@/assets/data/products';
 
 //import EditScreenInfo from '@/src/components/EditScreenInfo';
 
+export const defaultPizzaImage =
+            'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png'
+
+type ProductListItem ={
+    product: Product
+}
+
 // const product = products[0] // كل مرة تزيد هنا بيزيد بيأخذ من قائمة الابرودكتس الي تحتها 
 
-const ProductListItem = ({ product }) => {
+const ProductListItem = ({ product }: ProductListItem) => {
   //  console.log(props);
     return (
       <View style={styles.container}>
-        <Image source={{ uri: product.image}} style={styles.image} ></Image>
+        <Image source={{ uri: product.image || defaultPizzaImage}} style={styles.image} ></Image>
         <Text style={styles.title}>أرحبوا تراحيب المرباخ وقت المحل </Text>
         <Text style={styles.title}>{product.name}</Text>
         <Text style={styles.price}>${product.price}</Text>

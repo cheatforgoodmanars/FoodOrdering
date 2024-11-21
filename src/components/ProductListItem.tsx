@@ -1,6 +1,7 @@
-import { Text, View, StyleSheet, Image } from 'react-native';
+import { Text, View, StyleSheet, Image,Pressable } from 'react-native';
 import Colors from '@/constants/Colors';
 import { Product } from '@/types';
+import { Link } from 'expo-router';
 //import { Product } from '../types';
 // import products from '@/assets/data/products';
 
@@ -9,23 +10,30 @@ import { Product } from '@/types';
 export const defaultPizzaImage =
             'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png'
 
-type ProductListItem ={
-    product: Product
+type ProductListItemProps ={
+    product: Product;
 }
 
 // const product = products[0] // كل مرة تزيد هنا بيزيد بيأخذ من قائمة الابرودكتس الي تحتها 
 
-const ProductListItem = ({ product }: ProductListItem) => {
+const ProductListItem = ({ product }: ProductListItemProps) => {
   //  console.log(props);
     return (
-      <View style={styles.container}>
+      <Link href={`/${product.id}`} asChild>  
+        <Pressable style={styles.container}>
+      {/* <View style={styles.container}> */}
         <Image source={{ uri: product.image || defaultPizzaImage}} style={styles.image} 
           resizeMode='contain'
           ></Image>
         <Text style={styles.title}>أرحبوا تراحيب المرباخ وقت المحل </Text>
         <Text style={styles.title}>{product.name}</Text>
         <Text style={styles.price}>${product.price}</Text>
-      </View>
+
+        {/* <Link href={'/product'}>Go to details</Link> */}
+      {/* </View> */}
+       </Pressable>
+       </Link>
+     
     )
   }
   

@@ -19,7 +19,9 @@ const ProductListItem = ({ product }: ProductListItem) => {
   //  console.log(props);
     return (
       <View style={styles.container}>
-        <Image source={{ uri: product.image || defaultPizzaImage}} style={styles.image} ></Image>
+        <Image source={{ uri: product.image || defaultPizzaImage}} style={styles.image} 
+          resizeMode='contain'
+          ></Image>
         <Text style={styles.title}>أرحبوا تراحيب المرباخ وقت المحل </Text>
         <Text style={styles.title}>{product.name}</Text>
         <Text style={styles.price}>${product.price}</Text>
@@ -41,6 +43,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     padding: 10,
     borderRadius:20,
+    flex:1,
+    // margin:10,
+    maxWidth:'50%',
   },
   image: {
     width: '100%',

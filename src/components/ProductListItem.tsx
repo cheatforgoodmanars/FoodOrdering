@@ -1,7 +1,7 @@
 import { Text, View, StyleSheet, Image,Pressable } from 'react-native';
 import Colors from '@/constants/Colors';
 import { Product } from '@/types';
-import { Link } from 'expo-router';
+import { Link, useSegments } from 'expo-router';
 //import { Product } from '../types';
 // import products from '@/assets/data/products';
 
@@ -16,10 +16,17 @@ type ProductListItemProps ={
 
 // const product = products[0] // كل مرة تزيد هنا بيزيد بيأخذ من قائمة الابرودكتس الي تحتها 
 
+
 const ProductListItem = ({ product }: ProductListItemProps) => {
   //  console.log(props);
+
+  const segments = useSegments();
+  // const currentSegment = segments[0] === 'admin' || segments[0] === 'user' ? segments[0] : 'user';
+  // console.log(segments); 
+
     return (
-      <Link href={`/menu/${product.id}`} asChild>
+      // <Link href={`/menu/${product.id}`} asChild>   // تشتغل معي بدون مشاكل 
+      <Link href={segments[0] == '(admin)'? `/(admin)/menu/${product.id}`: `/(user)/menu/${product.id}`} asChild>
         <Pressable style={styles.container}>
       {/* <View style={styles.container}> */}
         <Image source={{ uri: product.image || defaultPizzaImage}} style={styles.image} 

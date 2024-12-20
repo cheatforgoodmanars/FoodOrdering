@@ -1,6 +1,7 @@
 import { supabase } from "@/lib/supabase";
 import { Session } from "@supabase/supabase-js";
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
+import { Text } from "react-native";
 
 
 type AuthData = {
@@ -58,6 +59,12 @@ export default function AuthProvider({ children }: PropsWithChildren) {
     // console.log(profile)    // هذا يأكد من بيانات المستخدم ومن اي مجموعة 
 
     return <AuthContext.Provider value={{session, loading, profile, isAdmin: profile?.group == 'ADMIN' }}>{ children }</AuthContext.Provider>;
+
+    // return (
+    //     <AuthContext.Provider value={{ session, loading, profile, isAdmin: profile?.group === 'ADMIN' }}>
+    //       {typeof children === 'string' ? <Text>{children}</Text> : children}
+    //     </AuthContext.Provider>
+    //   );
 }
 
 

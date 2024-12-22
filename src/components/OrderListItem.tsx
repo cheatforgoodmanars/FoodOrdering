@@ -13,7 +13,7 @@ type OrderListItemProps = {
 
 const OrderListItem = ({ order }: OrderListItemProps) => {
     const segments = useSegments();
-    console.log(segments);  // Log to inspect the segments array
+    // console.log(segments);  // Log to inspect the segments array
   
     // Ensure segments[0] exists
     const firstSegment = segments[0] || 'default-segment';  // Fallback if the segment is missing

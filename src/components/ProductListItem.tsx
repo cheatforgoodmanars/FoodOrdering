@@ -1,6 +1,6 @@
 import { Text, View, StyleSheet, Image,Pressable } from 'react-native';
 import Colors from '@/constants/Colors';
-import { Product } from '@/types';
+import { Product, Tables } from '@/types';
 import { Link, useSegments } from 'expo-router';
 //import { Product } from '../types';
 // import products from '@/assets/data/products';
@@ -11,7 +11,8 @@ export const defaultPizzaImage =
             'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png'
 
 type ProductListItemProps ={
-    product: Product;
+    // product: Product;
+    product: Tables<'products'>;
 };
 
 // const product = products[0] // كل مرة تزيد هنا بيزيد بيأخذ من قائمة الابرودكتس الي تحتها 

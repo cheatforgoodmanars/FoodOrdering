@@ -22,7 +22,7 @@ export default function OrederDetailsScreen()  {
       }
     
       if (error) {
-        return <Text>Faild to fetch products ff</Text>;
+        return <Text>Faild to fetch products</Text>;
       }
 
     // if (!order) {

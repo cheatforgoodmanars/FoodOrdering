@@ -24,7 +24,7 @@ export default function OrederDetailsScreen()  {
 
     const { data: order, isLoading, error } = useOrdersDetails(id);
 
-    
+    // console.log(order)
 
     // const order = orders.find((o) => o.id.toString() === id );
 
@@ -32,7 +32,7 @@ export default function OrederDetailsScreen()  {
         return <ActivityIndicator />;
       };
     
-      if (error) {
+      if (error || !order) {
         return <Text>Faild to fetch products</Text>;
       };
 

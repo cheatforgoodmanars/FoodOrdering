@@ -3,6 +3,7 @@ import { createContext, PropsWithChildren, useContext, useState } from "react";
 import { randomUUID } from 'expo-crypto';
 import { useInsertOrder } from "@/api/orders";
 import { useRouter } from "expo-router";
+import { useInsertOrderItems } from "@/api/order-items";
 
 
 // export const CartContext = createContext({});
@@ -32,6 +33,8 @@ const CartProvider = ({ children }: PropsWithChildren) => {
     const [items, setItems] = useState<CartItem[]>([]);
 
     const { mutate: insertOrder } = useInsertOrder();
+    const { mutate: insertOrderItems } = useInsertOrderItems();
+
     const router = useRouter();
 
     const addItem = (product: Product, size: CartItem['size']) =>{
@@ -92,17 +95,64 @@ const CartProvider = ({ children }: PropsWithChildren) => {
         setItems([]);
     }
     
-    const checkout = () => {
-        // console.warn('Checkout');
+    // const checkout = () => {
+    //     // console.warn('Checkout');
 
+    //     insertOrder({ total }, {
+    //         onSuccess: (data) => {
+    //             console.log(data);
+    //             clearCart();
+    //             // router.back();
+    //             // Navigate to the new order page (using the order id)
+    //             // router.push(`/(user)/orders/(user)/orders/14`); 
+    //             router.push(`/(user)/orders/${data.id}`);  
+    //         },
+    //     });
+    // };
+
+    const checkout = () => {
+        
         insertOrder({ total }, {
-            onSuccess: (data) => {
-                console.log(data);
+            onSuccess:  saveOrderItems,
+            },
+        );
+    };
+
+    const saveOrderItems = (order: Tables<'orders'>) => {
+        // const item1 = items [0];
+
+        const orderItems = items.map((cartItem) => ({
+            order_id: order.id,
+            product_id: cartItem.product_id,
+            quantity: cartItem.quantity,
+            size: cartItem.size,
+        }) );
+
+        insertOrderItems( orderItems,
+            // {
+        //     order_id: order.id,
+        //     product_id: item1.product_id,
+        //     quantity: item1.quantity,
+        //     size: item1.size,
+        // },
+        // 
+        {
+            onSuccess() {
                 clearCart();
                 // router.back();
-                router.push(`/(user)/orders/${data.id}`);  
+                // Navigate to the new order page (using the order id)
+                // router.push(`/(user)/orders/(user)/orders/14`); 
+                router.push(`/(user)/orders/${order.id}`); 
             },
         });
+        
+        //
+        // console.log(order);
+                // clearCart();
+                // // router.back();
+                // // Navigate to the new order page (using the order id)
+                // // router.push(`/(user)/orders/(user)/orders/14`); 
+                // router.push(`/(user)/orders/${order.id}`); 
     };
 
     return (

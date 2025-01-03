@@ -12,7 +12,8 @@ export const useAdminOrderList = ({ archived = false }) => {
         queryFn: async () => {
             const { data, error} = await supabase.from('orders').select('*')
                 // .in('status', ['New', 'Cooking', 'Delivering']); 
-                .in('status', statuses);
+                .in('status', statuses)
+                .order('created_at', { ascending: false });
             if(error) {
                 throw new Error(error.message);
             }
@@ -30,7 +31,11 @@ export const useMyOrderList = () => {
         queryFn: async () => {
             if (!id) return null;
 
-            const { data, error} = await supabase.from('orders').select('*').eq('user_id', id);
+            const { data, error} = await supabase
+            .from('orders')
+            .select('*')
+            .eq('user_id', id)
+            .order('created_at', { ascending: false });
             if(error) {
                 throw new Error(error.message);
             }
@@ -45,7 +50,10 @@ export const useOrdersDetails = (id: number) => {
         queryFn: async () => {
             const { data, error } = await supabase
             .from('orders')
-            .select('*')
+            .select('* , order_items(*, products(*))' )  // This line retrieves all columns from the orders table, along with related order_items, and for each item, the corresponding products details.
+            // Get all the columns from the orders table (* means "all columns").
+            // Also fetch related order_items (another table) for that order.
+            // From each order_item, fetch related products data.
             .eq('id', id)
             .single();
 
@@ -79,7 +87,7 @@ export const useInsertOrder = () => {
             return newProduct;
         },
         async onSuccess() {
-            await queryClient.invalidateQueries(['products']);
+            await queryClient.invalidateQueries(['orders']);
         },
 
 

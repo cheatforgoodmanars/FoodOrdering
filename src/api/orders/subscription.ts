@@ -24,4 +24,33 @@ export const useInsertOrderSubscription = () => {
               };
               
     }, [] );
-}
+};
+
+export const useUpdateOrderSubscription = (id: number) => {
+
+    const queryClient = useQueryClient();
+
+
+        useEffect(() => {
+            const orders = supabase
+            .channel('custom-filter-channel')
+            .on(
+                'postgres_changes',
+                {
+                event: 'UPDATE',
+                schema: 'public',
+                table: 'orders',
+                filter: `id=eq.${id}`,  // يسوي فلتر حل الاي دي الي تشوفه حالية مثل الطلب رقم #27
+
+                },
+                (payload) => {
+                queryClient.invalidateQueries(['orders', id])
+                }
+            )
+            .subscribe();
+        
+            return () => {
+            orders.unsubscribe();
+            };
+        }, []);
+        }

@@ -4,6 +4,7 @@ import OrderItemListItem from "@/components/OrderItemListItem"
 import { Stack, useLocalSearchParams } from "expo-router";
 import { ActivityIndicator, FlatList, Text, View } from "react-native";
 import { useOrdersDetails } from "@/api/orders";
+import { useUpdateOrderSubscription } from "@/api/orders/subscription";
 
 
 export default function OrederDetailsScreen()  {
@@ -12,6 +13,7 @@ export default function OrederDetailsScreen()  {
     const id = parseFloat(typeof idString === 'string' ? idString : idString[0])
 
     const { data: order, isLoading, error } = useOrdersDetails(id);
+    useUpdateOrderSubscription(id);
 
     
 

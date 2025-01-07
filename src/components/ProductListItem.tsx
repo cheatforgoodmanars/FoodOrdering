@@ -7,6 +7,8 @@ import { Link, useSegments } from 'expo-router';
 
 //import EditScreenInfo from '@/src/components/EditScreenInfo';
 
+import RemoteImage from './RemoteImage';
+
 export const defaultPizzaImage =
             'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png'
 
@@ -30,9 +32,13 @@ const ProductListItem = ({ product }: ProductListItemProps) => {
       <Link href={segments[0] == '(admin)'? `/(admin)/menu/${product.id}`: `/(user)/menu/${product.id}`} asChild>
         <Pressable style={styles.container}>
       {/* <View style={styles.container}> */}
-        <Image source={{ uri: product.image || defaultPizzaImage}} style={styles.image} 
+        <RemoteImage 
+          path={product.image}
+          fallback={defaultPizzaImage}
+        //<Image source={{ uri: product.image || defaultPizzaImage}} 
+          style={styles.image} 
           resizeMode='contain'
-          ></Image>
+          />
         {/* <Text style={styles.title}>أرحبوا تراحيب المرباخ وقت المحل </Text> */}
         <Text style={styles.title}>{product.name}</Text>
         <Text style={styles.price}>${product.price}</Text>

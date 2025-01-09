@@ -100,16 +100,18 @@ const CreateProductScreen = () => {
 
     };
 
-    const onUpdate = () => {
+    const onUpdate = async () => {
         if (!validateInput()) {
             return;
         };
+
+        const imagePath = await uploadImage();
 
         // console.warn('Updating product', name);
 
         // save on Database
 
-        updateProduct({ id, name, price: parseFloat(price), image }, {
+        updateProduct({ id, name, price: parseFloat(price), image:imagePath }, {
             onSuccess: () => {
                 resetFiels();
                 router.back();
@@ -132,7 +134,7 @@ const CreateProductScreen = () => {
           quality: 1,
         });
     
-        console.log(result);
+        // console.log(result);
     
         if (!result.canceled) {
           setImage(result.assets[0].uri);
@@ -178,8 +180,8 @@ const CreateProductScreen = () => {
           .from('product-images')
           .upload(filePath, decode(base64), { contentType });
         
-        console.log(error);
-        
+        // console.log(error); 
+
         if (data) {
           return data.path;
         }

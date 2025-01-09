@@ -17,6 +17,12 @@ const RemoteImage = ({ path, fallback, ...imageProps }: RemoteImageProps) => {
       const { data, error } = await supabase.storage
         .from('product-images')
         .download(path);
+        // .download(path, {    // ذي إضافة تخلاه يعرض الصور المصغرة لكن ما مفعلة ذي الإذافة في الخدمات المجانية 
+        //  transform: {
+        //     width: 50,
+        //     height: 50,
+        //     }
+        //  });
 
       if (error) {
         console.log(error);

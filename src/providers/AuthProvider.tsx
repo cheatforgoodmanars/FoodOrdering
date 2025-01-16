@@ -24,41 +24,78 @@ export default function AuthProvider({ children }: PropsWithChildren) {
     const [loading, setLoading] = useState(true);
 
 
-    useEffect(() => {
-        // console.log('Auth provider is mounted');
+    // useEffect(() => {
+    //     // console.log('Auth provider is mounted');
 
-         const fetchSession = async () => {
-            // const { data, error} = await supabase.auth.getSession();
-            const { data: { session } } = await supabase.auth.getSession();
+    //      const fetchSession = async () => {
+    //         // const { data, error} = await supabase.auth.getSession();
+    //         const { data: { session } } = await supabase.auth.getSession();
 
-            // console.log(data);
-            setSession(session);
+    //         // console.log(data);
+    //         setSession(session);
             
 
-            if (session) {
-                // fetch profile
-                const { data } = await supabase
-                    .from('profiles')
-                    .select('*')
-                    .eq('id', session.user.id)  // only look for 'id'
-                    .single();
-                setProfile(data || null);
+    //         if (session) {
+    //             // fetch profile
+    //             const { data } = await supabase
+    //                 .from('profiles')
+    //                 .select('*')
+    //                 .eq('id', session.user.id)  // only look for 'id'
+    //                 .single();
+    //             setProfile(data || null);
+    //         }
+
+
+    //         setLoading(false);
+    //      };
+
+    //     fetchSession();
+    //     supabase.auth.onAuthStateChange((_event, session) => {
+    //         setSession(session);
+    //       });
+
+    // }, [])
+
+    useEffect(() => {
+        let isMounted = true;
+    
+        const fetchSession = async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            
+            if (isMounted) {
+                setSession(session);
+    
+                if (session) {
+                    const { data } = await supabase
+                        .from('profiles')
+                        .select('*')
+                        .eq('id', session.user.id)
+                        .single();
+                    setProfile(data || null);
+                }
+    
+                setLoading(false);
             }
-
-
-            setLoading(false);
-         };
-
+        };
+    
         fetchSession();
-        supabase.auth.onAuthStateChange((_event, session) => {
-            setSession(session);
-          });
-
-    }, [])
+    
+        const unsubscribe = supabase.auth.onAuthStateChange((_event, newSession) => {
+            if (newSession?.user?.id !== session?.user?.id) {
+                setSession(newSession);
+            }
+        });
+    
+        return () => {
+            isMounted = false;
+            // unsubscribe();
+        };
+    }, [session]);
+    
 
     // console.log(profile)    // هذا يأكد من بيانات المستخدم ومن اي مجموعة 
 
-    return <AuthContext.Provider value={{session, loading, profile, isAdmin: profile?.group == 'ADMIN' }}>{ children }</AuthContext.Provider>;
+    return <AuthContext.Provider value={{session, loading, profile, isAdmin: profile?.group === 'ADMIN' }}>{ children }</AuthContext.Provider>;
 
     // return (
     //     <AuthContext.Provider value={{ session, loading, profile, isAdmin: profile?.group === 'ADMIN' }}>

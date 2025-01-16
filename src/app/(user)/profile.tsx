@@ -65,6 +65,7 @@ const ProfileScreen = () => {
     alert('You have signed out.')
   }
 
+
   return (
     <View style={styles.container}>
       <Icon name="person-circle-outline" size={100} color="#4F8EF7" />
@@ -76,6 +77,7 @@ const ProfileScreen = () => {
     </View>
   )
 }
+
 
 const styles = StyleSheet.create({
   container: {
